@@ -1,6 +1,9 @@
 package api
 
-import "database/sql"
+import (
+	"database/sql"
+	"net/http"
+)
 
 type APIServer struct {
 	addr string
@@ -12,4 +15,9 @@ func NewAPIServer(addr string, db *sql.DB) *APIServer {
 		addr: addr,
 		db: db,
 	}
+}
+
+func (s *APIServer) Run() error {
+	router := mux.NewRaouter()
+	return http.ListenAndServe(s.addr, router)
 }
